@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:must_eat_gui/ui/auth/auth_page.dart';
+import 'package:must_eat_gui/ui/home/home_page.dart';
+
+
 
 void main() {
 
@@ -63,66 +67,14 @@ class MyApp extends StatelessWidget {
 }
 
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: TextButton(onPressed: (){
-      isLogged = true;
-      context.go('/');
-    }, child: Text('go to /')),),);
-  }
-}
-
-class SignInTab extends StatelessWidget {
-  const SignInTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-
-class SignUpTab extends StatelessWidget {
-  const SignUpTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
 
 
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('home'),),);
-  }
-}
-
-class RestaurantsPage extends StatelessWidget {
-  const RestaurantsPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
 
 
-class MealsPage extends StatelessWidget {
-  const MealsPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
+
+
 
 
 
@@ -134,14 +86,4 @@ class DiscoverPage extends StatelessWidget {
     return Container();
   }
 }
-
-class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 
