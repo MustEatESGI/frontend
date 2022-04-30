@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:must_eat_gui/ui/auth/auth_page.dart';
+import 'package:must_eat_gui/ui/discover/discover_page.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
-
+import 'package:must_eat_gui/ui/meals/meals_page.dart';
+import 'package:must_eat_gui/ui/order/order_page.dart';
+import 'package:must_eat_gui/ui/restaurants/restaurants_page.dart';
+import 'package:must_eat_gui/ui/states/auth/auth_cubit.dart';
 
 
 void main() {
-
-
   runApp(const MyApp());
 }
-
-bool isLogged = false;
 
 
 class MyApp extends StatelessWidget {
@@ -32,37 +32,42 @@ class MyApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/restaurants',
-          builder: (BuildContext context, GoRouterState state) => const AuthPage(),
+          builder: (BuildContext context, GoRouterState state) => const RestaurantsPage(),
         ),
         GoRoute(
           path: '/meals',
-          builder: (BuildContext context, GoRouterState state) => const AuthPage(),
+          builder: (BuildContext context, GoRouterState state) => const MealsPage(),
         ),
         GoRoute(
           path: '/order',
-          builder: (BuildContext context, GoRouterState state) => const AuthPage(),
+          builder: (BuildContext context, GoRouterState state) => const OrderPage(),
         ),
         GoRoute(
           path: '/discover',
-          builder: (BuildContext context, GoRouterState state) => const AuthPage(),
+          builder: (BuildContext context, GoRouterState state) => const DiscoverPage(),
         ),
       ],
       initialLocation: '/auth',
       redirect: (state) {
+        // if(context.read<AuthCubit>().state.isLoggedIn){
+        //   return '/';
+        // }
         // if(isLogged) return '/';
         return null;
       }
     );
 
 
-    return MaterialApp.router(
+    return MultiBlocProvider(providers: [
+          BlocProvider(create: (context) => AuthCubit())
+    ], child: MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
-    );
+    ));
   }
 }
 
@@ -74,16 +79,4 @@ class MyApp extends StatelessWidget {
 
 
 
-
-
-
-
-class DiscoverPage extends StatelessWidget {
-  const DiscoverPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
 
