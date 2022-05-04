@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/ui/auth/auth_page.dart';
 import 'package:must_eat_gui/ui/discover/discover_page.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
@@ -8,6 +9,7 @@ import 'package:must_eat_gui/ui/meals/meals_page.dart';
 import 'package:must_eat_gui/ui/order/order_page.dart';
 import 'package:must_eat_gui/ui/restaurants/restaurants_page.dart';
 import 'package:must_eat_gui/ui/states/auth/auth_cubit.dart';
+import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
 
 
 void main() {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: <GoRoute>[
         GoRoute(
           path: '/',
-          builder: (BuildContext context, GoRouterState state) => const HomePage(),
+          builder: (BuildContext context, GoRouterState state) => BlocProvider(create: (context) => Injection.searchCubit, child: const HomePage(),),
         ),
         GoRoute(
           path: '/auth',
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, GoRouterState state) => const DiscoverPage(),
         ),
       ],
-      initialLocation: '/auth',
+      initialLocation: '/',
       redirect: (state) {
         // if(context.read<AuthCubit>().state.isLoggedIn){
         //   return '/';
@@ -65,6 +67,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
     ));

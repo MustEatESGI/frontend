@@ -12,12 +12,13 @@ part 'search.g.dart';
 abstract class Search{
   factory Search(Dio dio, {String baseUrl}) = _Search;
 
+  @GET("/meal")
+  Future<List<Meal>> searchByMeal(String name);
 
-  @GET("/discover")
-  Future<List<Restaurant>> discover();
+  @GET("/filter/distance")
+  Future<List<Meal>> filterByDistance();
 
-
-  @GET("/meals-by-rayon")
-  Future<List<Meal>> mealsByRayon();
+  @GET("/filter/price")
+  Future<List<Meal>> filterByPrice();
 
 }
