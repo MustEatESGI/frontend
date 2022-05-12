@@ -6,11 +6,11 @@ part 'restaurant.g.dart';
 
 @JsonSerializable()
 class Restaurant{
-  String? id, name;
-  Location? location;
+  String? id, name, imageUrl;
+  String? distance;
   List<String>? mealIds;
 
-  Restaurant({this.id, this.name, this.location, this.mealIds});
+  Restaurant({this.id, this.name, this.distance, this.mealIds, this.imageUrl});
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => _$RestaurantFromJson(json);
   Map<String, dynamic> toJson() => _$RestaurantToJson(this);

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/ui/auth/auth_page.dart';
-import 'package:must_eat_gui/ui/discover/discover_page.dart';
+import 'package:must_eat_gui/ui/cart/cart_page.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
 import 'package:must_eat_gui/ui/meals/meals_page.dart';
 import 'package:must_eat_gui/ui/order/order_page.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: <GoRoute>[
         GoRoute(
           path: '/',
-          builder: (BuildContext context, GoRouterState state) => BlocProvider(create: (context) => Injection.searchCubit, child: const HomePage(),),
+          builder: (BuildContext context, GoRouterState state) => BlocProvider(create: (context) => Injection.searchCubit..getTrendyRestaurants(), child: const HomePage(),),
         ),
         GoRoute(
           path: '/auth',
@@ -41,12 +41,12 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, GoRouterState state) => const MealsPage(),
         ),
         GoRoute(
-          path: '/order',
-          builder: (BuildContext context, GoRouterState state) => const OrderPage(),
+          path: '/cart',
+          builder: (BuildContext context, GoRouterState state) => const CartPage(),
         ),
         GoRoute(
-          path: '/discover',
-          builder: (BuildContext context, GoRouterState state) => const DiscoverPage(),
+          path: '/order',
+          builder: (BuildContext context, GoRouterState state) => const OrderPage(),
         ),
       ],
       initialLocation: '/',

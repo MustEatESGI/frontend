@@ -17,6 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SearchState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isTrendy => throw _privateConstructorUsedError;
+  List<Restaurant>? get restaurants => throw _privateConstructorUsedError;
+  List<Meal>? get meals => throw _privateConstructorUsedError;
+  String get filter => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SearchStateCopyWith<SearchState> get copyWith =>
@@ -28,7 +32,12 @@ abstract class $SearchStateCopyWith<$Res> {
   factory $SearchStateCopyWith(
           SearchState value, $Res Function(SearchState) then) =
       _$SearchStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading});
+  $Res call(
+      {bool isLoading,
+      bool isTrendy,
+      List<Restaurant>? restaurants,
+      List<Meal>? meals,
+      String filter});
 }
 
 /// @nodoc
@@ -42,12 +51,32 @@ class _$SearchStateCopyWithImpl<$Res> implements $SearchStateCopyWith<$Res> {
   @override
   $Res call({
     Object? isLoading = freezed,
+    Object? isTrendy = freezed,
+    Object? restaurants = freezed,
+    Object? meals = freezed,
+    Object? filter = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTrendy: isTrendy == freezed
+          ? _value.isTrendy
+          : isTrendy // ignore: cast_nullable_to_non_nullable
+              as bool,
+      restaurants: restaurants == freezed
+          ? _value.restaurants
+          : restaurants // ignore: cast_nullable_to_non_nullable
+              as List<Restaurant>?,
+      meals: meals == freezed
+          ? _value.meals
+          : meals // ignore: cast_nullable_to_non_nullable
+              as List<Meal>?,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -59,7 +88,12 @@ abstract class _$SearchStateCopyWith<$Res>
           _SearchState value, $Res Function(_SearchState) then) =
       __$SearchStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading});
+  $Res call(
+      {bool isLoading,
+      bool isTrendy,
+      List<Restaurant>? restaurants,
+      List<Meal>? meals,
+      String filter});
 }
 
 /// @nodoc
@@ -75,12 +109,32 @@ class __$SearchStateCopyWithImpl<$Res> extends _$SearchStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = freezed,
+    Object? isTrendy = freezed,
+    Object? restaurants = freezed,
+    Object? meals = freezed,
+    Object? filter = freezed,
   }) {
     return _then(_SearchState(
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTrendy: isTrendy == freezed
+          ? _value.isTrendy
+          : isTrendy // ignore: cast_nullable_to_non_nullable
+              as bool,
+      restaurants: restaurants == freezed
+          ? _value.restaurants
+          : restaurants // ignore: cast_nullable_to_non_nullable
+              as List<Restaurant>?,
+      meals: meals == freezed
+          ? _value.meals
+          : meals // ignore: cast_nullable_to_non_nullable
+              as List<Meal>?,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -88,14 +142,44 @@ class __$SearchStateCopyWithImpl<$Res> extends _$SearchStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SearchState extends _SearchState {
-  const _$_SearchState({required this.isLoading}) : super._();
+  const _$_SearchState(
+      {required this.isLoading,
+      required this.isTrendy,
+      final List<Restaurant>? restaurants,
+      final List<Meal>? meals,
+      required this.filter})
+      : _restaurants = restaurants,
+        _meals = meals,
+        super._();
 
   @override
   final bool isLoading;
+  @override
+  final bool isTrendy;
+  final List<Restaurant>? _restaurants;
+  @override
+  List<Restaurant>? get restaurants {
+    final value = _restaurants;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Meal>? _meals;
+  @override
+  List<Meal>? get meals {
+    final value = _meals;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String filter;
 
   @override
   String toString() {
-    return 'SearchState(isLoading: $isLoading)';
+    return 'SearchState(isLoading: $isLoading, isTrendy: $isTrendy, restaurants: $restaurants, meals: $meals, filter: $filter)';
   }
 
   @override
@@ -103,12 +187,22 @@ class _$_SearchState extends _SearchState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SearchState &&
-            const DeepCollectionEquality().equals(other.isLoading, isLoading));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.isTrendy, isTrendy) &&
+            const DeepCollectionEquality()
+                .equals(other.restaurants, restaurants) &&
+            const DeepCollectionEquality().equals(other.meals, meals) &&
+            const DeepCollectionEquality().equals(other.filter, filter));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(isLoading));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isTrendy),
+      const DeepCollectionEquality().hash(restaurants),
+      const DeepCollectionEquality().hash(meals),
+      const DeepCollectionEquality().hash(filter));
 
   @JsonKey(ignore: true)
   @override
@@ -117,11 +211,24 @@ class _$_SearchState extends _SearchState {
 }
 
 abstract class _SearchState extends SearchState {
-  const factory _SearchState({required final bool isLoading}) = _$_SearchState;
+  const factory _SearchState(
+      {required final bool isLoading,
+      required final bool isTrendy,
+      final List<Restaurant>? restaurants,
+      final List<Meal>? meals,
+      required final String filter}) = _$_SearchState;
   const _SearchState._() : super._();
 
   @override
   bool get isLoading => throw _privateConstructorUsedError;
+  @override
+  bool get isTrendy => throw _privateConstructorUsedError;
+  @override
+  List<Restaurant>? get restaurants => throw _privateConstructorUsedError;
+  @override
+  List<Meal>? get meals => throw _privateConstructorUsedError;
+  @override
+  String get filter => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SearchStateCopyWith<_SearchState> get copyWith =>

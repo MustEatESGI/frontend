@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
+
+import '../../models/restaurant.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,56 +14,127 @@ class HomePage extends StatelessWidget {
     return BlocConsumer<SearchCubit, SearchState>(
         builder: (context, state) {
           return Scaffold(
+            appBar: CustomAppBar(context: context, location: "/",),
             body: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Card(
-                      elevation: 10,
-                      child: SizedBox(
-                          width: 300,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: "Rechercher un repas",
-                                border: OutlineInputBorder()),
-                            onChanged: context.read<SearchCubit>().getByMeal,
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SearchOption(
-                      onFiltersChanged: (List<String> filters) {},
-                    ),
-                  ],
+                const SizedBox(height: 40),
+                const SizedBox(height: 10),
+                Text(
+                  state.isTrendy
+                      ? 'Les restaurants tendances près de chez vous'
+                      : 'Vos résultats',
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 20),
                 Flexible(
-                  child: GridView.builder(
-                      padding: const EdgeInsets.all(20),
-                      itemCount: 20,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10),
-                      itemBuilder: (context, index) {
-                        return MealCard(
-                          index: index,
-                          name: 'Burger',
-                          deliveryTime: '0 min',
-                          price: '15 E',
-                          posterURL: 'https://picsum.photos/200/300',
-                        );
-                      }),
+                  child: state.isTrendy
+                      ? const RestaurantsGrid()
+                      : const MealsGrid(),
                 ),
               ],
             ),
           );
         },
         listener: (context, state) {});
+  }
+}
+
+class CustomAppBar extends AppBar {
+  CustomAppBar({Key? key, required BuildContext context, required String location})
+      : super(
+          key: key,
+          toolbarHeight: 70,
+          actions: [
+            IconButton(
+                padding: const EdgeInsets.all(20),
+                onPressed: () {
+                  GoRouter.of(context).go('/');
+                },
+                icon: const Icon(Icons.home)),
+            IconButton(
+                padding: const EdgeInsets.all(20),
+                onPressed: () {
+                  GoRouter.of(context).go('/cart');
+                },
+                icon: const Icon(Icons.shopping_cart_rounded)),
+          ],
+          title: location == '/' ?  Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                elevation: 00,
+                child: SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          labelText: "Rechercher un repas",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25))),
+                      onChanged: context.read<SearchCubit>().getByMealAndFilter,
+                    )),
+              ),
+              const SizedBox(width: 20),
+              SearchOption(
+                onFiltersChanged: context.read<SearchCubit>().onFiltersChanged,
+              ),
+            ],
+          ) : null,
+          backgroundColor: const Color(0xFFFB2629),
+          leading: Image.network(
+            'https://media.discordapp.net/attachments/962421715407880272/962454577813270549/unknown.png',
+            scale: 3,
+          ),
+        ) {}
+}
+
+class RestaurantsGrid extends StatelessWidget {
+  const RestaurantsGrid({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
+      return GridView.builder(
+          padding: const EdgeInsets.all(20),
+          itemCount: 18,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 10),
+          itemBuilder: (context, index) {
+            final item = state.restaurants![index];
+            return RestaurantCard(
+              index: index,
+              restaurant: item,
+            );
+          });
+    });
+  }
+}
+
+class MealsGrid extends StatelessWidget {
+  const MealsGrid({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
+      return GridView.builder(
+          padding: const EdgeInsets.all(20),
+          itemCount: 18,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 10),
+          itemBuilder: (context, index) {
+            final item = state.meals![index];
+            return MealCard(
+              index: index,
+              name: item.name!,
+              deliveryTime: '0 min',
+              price: item.price.toString(),
+              posterURL: item.imageUrl!,
+            );
+          });
+    });
   }
 }
 
@@ -98,7 +172,10 @@ class _SearchOptionState extends State<SearchOption> {
             const SizedBox(
               width: 10,
             ),
-            const Text('Distance')
+            const Text(
+              'Distance',
+              style: TextStyle(fontSize: 14),
+            )
           ],
         ),
         const SizedBox(
@@ -121,10 +198,71 @@ class _SearchOptionState extends State<SearchOption> {
             const SizedBox(
               width: 10,
             ),
-            const Text('Prix')
+            const Text(
+              'Prix',
+              style: TextStyle(fontSize: 14),
+            )
           ],
         ),
       ],
+    );
+  }
+}
+
+class RestaurantCard extends StatelessWidget {
+  const RestaurantCard({
+    Key? key,
+    required this.index,
+    required this.restaurant,
+  }) : super(key: key);
+
+  final int index;
+  final Restaurant restaurant;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      child: GestureDetector(
+        onTap: () {
+          print('on click meal $index');
+        },
+        child: Card(
+          elevation: 8,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            children: [
+              Flexible(
+                  flex: 4,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.network(
+                      restaurant.imageUrl!,
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+              Flexible(
+                  child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        restaurant.name!,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      Text(restaurant.distance!),
+                    ],
+                  ),
+                ),
+              )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -147,48 +285,56 @@ class MealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print('on click meal $index');
-      },
-      child: Stack(
-        children: [
-          Card(
-            elevation: 8,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                Flexible(
-                    flex: 8,
-                    child: Container(
-                      child: Image.network('https://picsum.photos/900/800', fit: BoxFit.cover,),
-                    )),
-                Flexible(
-                    child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+    return SizedBox(
+      width: 200,
+      child: GestureDetector(
+        onTap: () {
+          print('on click meal $index');
+        },
+        child: Stack(
+          children: [
+            Card(
+              elevation: 8,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                children: [
+                  Flexible(
+                      flex: 4,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.network(
+                          posterURL,
+                          fit: BoxFit.cover,
                         ),
-                        Text(deliveryTime),
-                        Text(
-                          price,
-                          style: const TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                      ],
+                      )),
+                  Flexible(
+                      child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          Text(deliveryTime),
+                          Text(
+                            price,
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )),
-              ],
+                  )),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
