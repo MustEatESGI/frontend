@@ -5,11 +5,8 @@ import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/ui/auth/auth_page.dart';
 import 'package:must_eat_gui/ui/cart/cart_page.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
-import 'package:must_eat_gui/ui/meals/meals_page.dart';
-import 'package:must_eat_gui/ui/order/order_page.dart';
-import 'package:must_eat_gui/ui/restaurants/restaurants_page.dart';
+import 'package:must_eat_gui/ui/restaurant/restaurant_page.dart';
 import 'package:must_eat_gui/ui/states/auth/auth_cubit.dart';
-import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
 
 
 void main() {
@@ -33,23 +30,15 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, GoRouterState state) => const AuthPage(),
         ),
         GoRoute(
-          path: '/restaurants',
-          builder: (BuildContext context, GoRouterState state) => const RestaurantsPage(),
-        ),
-        GoRoute(
-          path: '/meals',
-          builder: (BuildContext context, GoRouterState state) => const MealsPage(),
+          path: '/restaurant',
+          builder: (BuildContext context, GoRouterState state) => const RestaurantPage(),
         ),
         GoRoute(
           path: '/cart',
           builder: (BuildContext context, GoRouterState state) => const CartPage(),
         ),
-        GoRoute(
-          path: '/order',
-          builder: (BuildContext context, GoRouterState state) => const OrderPage(),
-        ),
       ],
-      initialLocation: '/',
+      initialLocation: '/restaurant',
       redirect: (state) {
         // if(context.read<AuthCubit>().state.isLoggedIn){
         //   return '/';
@@ -63,7 +52,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(providers: [
           BlocProvider(create: (context) => AuthCubit())
     ], child: MaterialApp.router(
-      title: 'Flutter Demo',
+      title: 'Must EAT',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
