@@ -15,7 +15,7 @@ abstract class Order{
 
 
   @POST("/submit-cart")
-  Future<Command> submitCart();
+  Future<String> submitCart(@Body() Command command);
 
 
 }

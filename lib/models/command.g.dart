@@ -10,7 +10,8 @@ Command _$CommandFromJson(Map<String, dynamic> json) => Command(
       id: json['id'] as String?,
       userId: json['userId'] as String?,
       restaurantId: json['restaurantId'] as String?,
-      mealIds: json['mealIds'] as String?,
+      mealIds:
+          (json['mealIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$CommandToJson(Command instance) => <String, dynamic>{

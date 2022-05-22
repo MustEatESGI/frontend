@@ -11,6 +11,9 @@ Meal _$MealFromJson(Map<String, dynamic> json) => Meal(
       name: json['name'] as String?,
       price: (json['price'] as num?)?.toDouble(),
       imageUrl: json['imageUrl'] as String?,
+      restaurant: json['restaurant'] == null
+          ? null
+          : Restaurant.fromJson(json['restaurant'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MealToJson(Meal instance) => <String, dynamic>{
@@ -18,4 +21,5 @@ Map<String, dynamic> _$MealToJson(Meal instance) => <String, dynamic>{
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'price': instance.price,
+      'restaurant': instance.restaurant,
     };

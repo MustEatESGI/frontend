@@ -6,7 +6,9 @@ import 'package:go_router/go_router.dart';
 import '../home/home_page.dart';
 
 class RestaurantPage extends StatelessWidget {
-  const RestaurantPage({Key? key}) : super(key: key);
+  const RestaurantPage({Key? key, required this.restaurantID}) : super(key: key);
+
+  final String restaurantID;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class RestaurantPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Text(
-              'Pizza Pino',
+              'Pizza Pino $restaurantID',
               style: TextStyle(fontSize: 25),
             ),
           ),

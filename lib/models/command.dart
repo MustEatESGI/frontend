@@ -5,7 +5,8 @@ part 'command.g.dart';
 
 @JsonSerializable()
 class Command{
-  String? id, userId, restaurantId, mealIds;
+  String? id, userId, restaurantId;
+  List<String>? mealIds;
 
   Command({this.id, this.userId, this.restaurantId, this.mealIds});
 

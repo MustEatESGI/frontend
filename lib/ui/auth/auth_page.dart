@@ -19,13 +19,16 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: 200,
+          width: 400,
           height: double.infinity,
           child: Form(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const FlutterLogo(size: 150),
+              Image.network(
+                'https://media.discordapp.net/attachments/962421715407880272/962454577813270549/unknown.png',
+                scale: 1,
+              ),
               const SizedBox(height: 50),
               TextFormField(
                 onChanged: context.read<AuthCubit>().onEmailChange,
@@ -34,7 +37,15 @@ class _AuthPageState extends State<AuthPage> {
               const SizedBox(height: 25),
               TextFormField(
                 onChanged: context.read<AuthCubit>().onPasswordChange,
-                decoration: const InputDecoration(hintText: "Password"),
+                decoration: const InputDecoration(hintText: "Mot de passe"),
+              ),
+              const SizedBox(height: 50),
+              SizedBox(
+                  width: 400,
+                  child: Text("Veuillez mentionner votre adresse en cas d'inscription :", style: TextStyle(fontWeight: FontWeight.bold),)),
+              TextFormField(
+                onChanged: context.read<AuthCubit>().onPasswordChange,
+                decoration: const InputDecoration(hintText: "Adresse"),
               ),
               const SizedBox(height: 50),
               Row(

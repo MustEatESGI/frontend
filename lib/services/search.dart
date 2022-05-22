@@ -18,5 +18,9 @@ abstract class Search{
   @GET("/search")
   Future<List<Meal>> searchByMeal(@Query("name") String name, @Query("sort") String sort);
 
+  @GET("/search/{id}")
+  Future<Meal> searchSingleMealByID(@Path("id") String id);
 
+  @GET("/restaurant/{id}")
+  Future<Meal> searchRestaurantByID(@Path("id") String id);
 }

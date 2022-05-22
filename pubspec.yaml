@@ -43,6 +43,7 @@ dependencies:
   freezed: ^2.0.2
   json_serializable: ^6.2.0
   json_annotation:
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

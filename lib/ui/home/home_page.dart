@@ -14,7 +14,10 @@ class HomePage extends StatelessWidget {
     return BlocConsumer<SearchCubit, SearchState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: CustomAppBar(context: context, location: "/",),
+            appBar: CustomAppBar(
+              context: context,
+              location: "/",
+            ),
             body: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -42,7 +45,8 @@ class HomePage extends StatelessWidget {
 }
 
 class CustomAppBar extends AppBar {
-  CustomAppBar({Key? key, required BuildContext context, required String location})
+  CustomAppBar(
+      {Key? key, required BuildContext context, required String location})
       : super(
           key: key,
           toolbarHeight: 70,
@@ -60,29 +64,33 @@ class CustomAppBar extends AppBar {
                 },
                 icon: const Icon(Icons.shopping_cart_rounded)),
           ],
-          title: location == '/' ?  Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                elevation: 00,
-                child: SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          labelText: "Rechercher un repas",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25))),
-                      onChanged: context.read<SearchCubit>().getByMealAndFilter,
-                    )),
-              ),
-              const SizedBox(width: 20),
-              SearchOption(
-                onFiltersChanged: context.read<SearchCubit>().onFiltersChanged,
-              ),
-            ],
-          ) : null,
+          title: location == '/'
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      elevation: 00,
+                      child: SizedBox(
+                          width: 300,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Rechercher un repas",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25))),
+                            onChanged:
+                                context.read<SearchCubit>().getByMealAndFilter,
+                          )),
+                    ),
+                    const SizedBox(width: 20),
+                    SearchOption(
+                      onFiltersChanged:
+                          context.read<SearchCubit>().onFiltersChanged,
+                    ),
+                  ],
+                )
+              : null,
           backgroundColor: const Color(0xFFFB2629),
           leading: Image.network(
             'https://media.discordapp.net/attachments/962421715407880272/962454577813270549/unknown.png',
@@ -290,6 +298,9 @@ class MealCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print('on click meal $index');
+          print('A');
+
+          context.go('/restaurant/1');
         },
         child: Stack(
           children: [
