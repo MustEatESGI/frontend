@@ -234,6 +234,7 @@ class RestaurantCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print('on click meal $index');
+          context.go('/restaurant/1');
         },
         child: Card(
           elevation: 8,

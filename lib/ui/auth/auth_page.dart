@@ -27,7 +27,7 @@ class _AuthPageState extends State<AuthPage> {
             children: [
               Image.network(
                 'https://media.discordapp.net/attachments/962421715407880272/962454577813270549/unknown.png',
-                scale: 1,
+                scale: 0.75,
               ),
               const SizedBox(height: 50),
               TextFormField(
