@@ -8,6 +8,7 @@ import 'package:must_eat_gui/ui/home/home_page.dart';
 import 'package:must_eat_gui/ui/restaurant/restaurant_page.dart';
 import 'package:must_eat_gui/ui/states/auth/auth_cubit.dart';
 import 'package:must_eat_gui/ui/states/order/order_cubit.dart';
+import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,11 +24,7 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: '/',
             builder: (BuildContext context, GoRouterState state) =>
-                BlocProvider(
-              create: (context) =>
-                  Injection.searchCubit..getTrendyRestaurants(),
-              child: const HomePage(),
-            ),
+                const HomePage(),
           ),
           GoRoute(
             path: '/auth',
@@ -42,10 +39,10 @@ class MyApp extends StatelessWidget {
             },
           ),
           GoRoute(
-            path: '/cart',
-            builder: (BuildContext context, GoRouterState state) =>
-                const CartPage(),
-          ),
+              path: '/cart',
+              builder: (BuildContext context, GoRouterState state) {
+                return const CartPage();
+              }),
         ],
         initialLocation: '/auth',
         redirect: (state) {
@@ -59,6 +56,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => Injection.authCubit),
+          BlocProvider(
+              create: (context) =>
+                  Injection.searchCubit..getTrendyRestaurants()),
           BlocProvider(create: (context) => Injection.orderCubit)
         ],
         child: MaterialApp.router(

@@ -5,6 +5,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:must_eat_gui/main.dart';
 
 import '../states/auth/auth_cubit.dart';
+import '../states/order/order_cubit.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -54,6 +55,7 @@ class _AuthPageState extends State<AuthPage> {
                   GFButton(
                     onPressed: () {
                       context.read<AuthCubit>().onQuickLogin(context);
+                      context.read<OrderCubit>().clearCommand();
                     },
                     text: "Connexion",
                   ),
@@ -61,6 +63,7 @@ class _AuthPageState extends State<AuthPage> {
                     color: GFColors.SUCCESS,
                     onPressed: () {
                       context.read<AuthCubit>().onSignUp(context);
+                      context.read<OrderCubit>().clearCommand();
                     },
                     text: "Inscription",
                   ),

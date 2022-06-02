@@ -24,6 +24,9 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   void addMeal(Meal meal) {
+    if(state.meals != null && state.meals?.first.restaurant?.id != meal.restaurant?.id){
+      return;
+    }
     state.command?.mealIds = [...?state.command?.mealIds, meal.id!];
     emit(state.copyWith(meals: [...?state.meals, meal], command: state.command));
   }
@@ -38,11 +41,9 @@ class OrderCubit extends Cubit<OrderState> {
     double total = 00.00;
     if (state.command == null) emit(state.copyWith(totalPrice: total.toString()));
     final mealsIds = state.command?.mealIds;
-    final meals = await Future.wait(mealsIds!
-        .map((meal) async => await _search.searchSingleMealByID(meal))
-        .toList());
+    final meals = state.meals;
 
-    for (var element in meals) {
+    for (var element in meals!) {
       total += element.price!;
     }
     emit(state.copyWith(totalPrice: total.toString()));

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
+
+import '../core/custom_app_bar.dart';
+import '../states/order/order_cubit.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -9,7 +13,6 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List l = List.generate(30, (index) => "Test $index");
-
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
@@ -23,19 +26,24 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: ['Articles', 'Quantité', 'Prix']
                   .map((e) => Text(e,
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)))
+                      style: const TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.bold)))
                   .toList(),
             ),
           ),
-          Divider(),
+          const Divider(),
           Flexible(
-            child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                itemCount: l.length,
-                itemBuilder: (context, index) {
-                  return ProductTile();
-                }),
+            child: BlocBuilder<OrderCubit, OrderState>(
+              builder: (context, state) {
+                if (state.meals == null) return const SizedBox();
+                return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                    itemCount: state.meals?.length,
+                    itemBuilder: (context, index) {
+                      return const ProductTile();
+                    });
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(25),
@@ -44,22 +52,31 @@ class CartPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('TOTAL : '),
-                  SizedBox(
+                  const Text('TOTAL : '),
+                  const SizedBox(
                     width: 20,
                   ),
-                  Text('45.50 EUROS'),
-                  SizedBox(
+                  BlocBuilder<OrderCubit, OrderState>(
+                    builder: (context, state) {
+                      if (state.meals == null) return const SizedBox();
+                      return Text('${state.totalPrice}EUROS');
+                    },
+                  ),
+                  const SizedBox(
                     width: 20,
                   ),
                   GFButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<OrderCubit>().payCommand(context);
+                    },
                     text: "Payer",
                     color: GFColors.DANGER,
                   ),
                   IconButton(
-                      onPressed: () {},
-                      icon: Icon(
+                      onPressed: () {
+                        context.read<OrderCubit>().clearCommand();
+                      },
+                      icon: const Icon(
                         Icons.delete_forever_sharp,
                         color: GFColors.DANGER,
                       ))
@@ -83,7 +100,11 @@ class ProductTile extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text('Jambon beurre'), Text('2'), Text('10.99')],
+          children: [
+            const Text('Jambon beurre'),
+            const Text('2'),
+            const Text('10.99')
+          ],
         ),
       ),
     );

@@ -8,6 +8,7 @@ const factory SearchState({
   required bool isTrendy,
   List<Restaurant>? restaurants,
   List<Meal>? meals,
+  Restaurant? restaurant,
   required String filter,
 }) = _SearchState;
 
