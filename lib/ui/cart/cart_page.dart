@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/button/gf_button.dart';
+import 'package:must_eat_gui/core/injection.dart';
+import 'package:must_eat_gui/models/meal.dart';
+import 'package:must_eat_gui/ui/cart/product_tile.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
 
 import '../core/custom_app_bar.dart';
@@ -40,7 +43,9 @@ class CartPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     itemCount: state.meals?.length,
                     itemBuilder: (context, index) {
-                      return const ProductTile();
+                      return ProductTile(
+                        meal: state.meals![index],
+                      );
                     });
               },
             ),
@@ -59,7 +64,7 @@ class CartPage extends StatelessWidget {
                   BlocBuilder<OrderCubit, OrderState>(
                     builder: (context, state) {
                       if (state.meals == null) return const SizedBox();
-                      return Text('${state.totalPrice}EUROS');
+                      return Text(state.totalPrice);
                     },
                   ),
                   const SizedBox(
@@ -90,23 +95,3 @@ class CartPage extends StatelessWidget {
   }
 }
 
-class ProductTile extends StatelessWidget {
-  const ProductTile({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Jambon beurre'),
-            const Text('2'),
-            const Text('10.99')
-          ],
-        ),
-      ),
-    );
-  }
-}

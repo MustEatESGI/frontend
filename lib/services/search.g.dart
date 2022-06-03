@@ -10,7 +10,7 @@ part of 'search.dart';
 
 class _Search implements Search {
   _Search(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
+    baseUrl ??= 'http://localhost:8080/';
   }
 
   final Dio _dio;
@@ -38,12 +38,12 @@ class _Search implements Search {
   @override
   Future<List<Meal>> searchByMeal(name, sort) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'name': name, r'sort': sort};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Meal>>(
         Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/search',
+            .compose(_dio.options, '/search/${name}/${sort}',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
@@ -68,17 +68,18 @@ class _Search implements Search {
   }
 
   @override
-  Future<Meal> searchRestaurantByID(id) async {
+  Future<Restaurant> searchRestaurantByID(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<Meal>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/restaurant/${id}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Meal.fromJson(_result.data!);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<Restaurant>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/restaurant/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = Restaurant.fromJson(_result.data!);
     return value;
   }
 

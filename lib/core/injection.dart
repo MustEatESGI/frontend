@@ -18,3 +18,5 @@ class Injection {
   static AuthCubit get authCubit => AuthCubit();
 
 }
+
+String convertPrice(price) => (price! / 100.00).toString() + ' €';

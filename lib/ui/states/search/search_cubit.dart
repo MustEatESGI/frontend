@@ -15,13 +15,18 @@ class SearchCubit extends Cubit<SearchState> {
 
   final Search _searchService;
 
+  void reset() {
+    emit(SearchState.initial());
+    getTrendyRestaurants();
+  }
+
   void getTrendyRestaurants() async {
     // final restaurants = await _searchService.searchTrendyRestaurants();
     // TODO RM
     final restaurants = List.generate(
         30,
         (index) => Restaurant(
-            id: index.toString(),
+            id: index,
             name: 'name $index',
             distance: index.toString() + ' km',
             imageUrl: 'https://picsum.photos/200/300'));
@@ -33,15 +38,15 @@ class SearchCubit extends Cubit<SearchState> {
     if (name.isEmpty || name == '') {
       emit(state.copyWith(isTrendy: true));
     } else {
-      //final meals = await _searchService.searchByMeal(name, state.filter);
-      // TODO RM
-      final meals = List.generate(
-          30,
-          (index) => Meal(
-              id: index.toString(),
-              name: 'name $index',
-              price: index.toDouble(),
-              imageUrl: 'https://picsum.photos/200/300'));
+      final meals = await _searchService.searchByMeal(name, state.filter);
+      // // TODO RM
+      // final meals = List.generate(
+      //     30,
+      //     (index) => Meal(
+      //         id: index.toString(),
+      //         name: 'name $index',
+      //         price: index.toDouble(),
+      //         imageUrl: 'https://picsum.photos/200/300'));
       final nextState = state.copyWith(isTrendy: false, meals: meals);
       emit(nextState);
     }
@@ -53,34 +58,35 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void getRestaurantAndMeals(String restaurantID) async {
-    var meals = List.generate(
-        30,
-            (index) => Meal(
-            id: index.toString(),
-            name: 'meal name ${Random().nextInt(9000).toString()}',
-            price: index.toDouble(),
-            imageUrl: 'https://picsum.photos/200/300',restaurant: null
-        ));
-
-    final rand = Random().nextInt(9000).toString();
-    var restaurant = Restaurant(
-        id: Random().nextInt(9000).toString(),
-        name: 'Pizza Pino',
-        distance: '15' + ' km',
-        imageUrl: 'https://picsum.photos/200/300',
-        meals: meals
-    );
-    meals = meals.map((e) {
-      e.restaurant = Restaurant(
-          id: Random().nextInt(9000).toString(),
-          name: 'Pizza Pino',
-          distance: '15' + ' km',
-          imageUrl: 'https://picsum.photos/200/300',
-          meals: meals
-      );
-      return e;
-    }).toList();
-    restaurant.meals = meals;
+    // var meals = List.generate(
+    //     30,
+    //         (index) => Meal(
+    //         id: index,
+    //         name: 'meal name ${Random().nextInt(9000).toString()}',
+    //         price: index.toDouble(),
+    //         picture: 'https://picsum.photos/200/300',restaurant: null
+    //     ));
+    //
+    // final rand = Random().nextInt(9000).toString();
+    // var restaurant = Restaurant(
+    //     id: Random().nextInt(9000).toString(),
+    //     name: 'Pizza Pino',
+    //     distance: '15' + ' km',
+    //     imageUrl: 'https://picsum.photos/200/300',
+    //     meals: meals
+    // );
+    // meals = meals.map((e) {
+    //   e.restaurant = Restaurant(
+    //       id: Random().nextInt(9000).toString(),
+    //       name: 'Pizza Pino',
+    //       distance: '15' + ' km',
+    //       imageUrl: 'https://picsum.photos/200/300',
+    //       meals: meals
+    //   );
+    //   return e;
+    // }).toList();
+    // restaurant.meals = meals;
+    final restaurant = await _searchService.searchRestaurantByID(restaurantID);
 
     final nextState = state.copyWith(restaurant: restaurant);
     emit(nextState);

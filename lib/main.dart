@@ -6,8 +6,6 @@ import 'package:must_eat_gui/ui/auth/auth_page.dart';
 import 'package:must_eat_gui/ui/cart/cart_page.dart';
 import 'package:must_eat_gui/ui/home/home_page.dart';
 import 'package:must_eat_gui/ui/restaurant/restaurant_page.dart';
-import 'package:must_eat_gui/ui/states/auth/auth_cubit.dart';
-import 'package:must_eat_gui/ui/states/order/order_cubit.dart';
 import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
 
 void main() {
@@ -35,6 +33,8 @@ class MyApp extends StatelessWidget {
             path: '/restaurant/:rid',
             builder: (BuildContext context, GoRouterState state) {
               final restaurantID = state.params['rid'] as String;
+              final searchBloc = BlocProvider.of<SearchCubit>(context);
+              searchBloc.getRestaurantAndMeals(restaurantID);
               return RestaurantPage(restaurantID: restaurantID);
             },
           ),

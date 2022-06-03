@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/models/command.dart';
 import 'package:must_eat_gui/services/order.dart';
 import 'package:must_eat_gui/services/search.dart';
@@ -19,7 +20,7 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit(this._search, this._order) : super(OrderState.initial());
 
   void createCommand(String userID, String restaurantID, Meal meal) async {
-    final command = Command(userId: userID, restaurantId: restaurantID, mealIds: [meal.id!]);
+    final command = Command(userId: userID, restaurantId: restaurantID, mealIds: [meal.id!.toString()]);
     emit(state.copyWith(command: command, meals: [meal]));
   }
 
@@ -27,7 +28,7 @@ class OrderCubit extends Cubit<OrderState> {
     if(state.meals != null && state.meals?.first.restaurant?.id != meal.restaurant?.id){
       return;
     }
-    state.command?.mealIds = [...?state.command?.mealIds, meal.id!];
+    state.command?.mealIds = [...?state.command?.mealIds, meal.id!.toString()];
     emit(state.copyWith(meals: [...?state.meals, meal], command: state.command));
   }
 
@@ -46,7 +47,7 @@ class OrderCubit extends Cubit<OrderState> {
     for (var element in meals!) {
       total += element.price!;
     }
-    emit(state.copyWith(totalPrice: total.toString()));
+    emit(state.copyWith(totalPrice: convertPrice(total)));
   }
 
   void payCommand(BuildContext context) async{

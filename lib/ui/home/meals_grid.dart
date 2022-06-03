@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/ui/states/search/search_cubit.dart';
 
 import 'meal_card.dart';
@@ -14,18 +15,19 @@ class MealsGrid extends StatelessWidget {
     return BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
       return GridView.builder(
           padding: const EdgeInsets.all(20),
-          itemCount: 18,
+          itemCount: state.meals!.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 10),
+              crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
           itemBuilder: (context, index) {
             final item = state.meals![index];
             return MealCard(
-              id: item.id!,
+              restaurantId: item.restaurantId!.toString(),
+              id: item.id!.toString(),
               index: index,
               name: item.name!,
               deliveryTime: '0 min',
-              price: item.price.toString(),
-              posterURL: item.imageUrl!,
+              price: convertPrice(item.price),
+              posterURL: item.picture!,
             );
           });
     });

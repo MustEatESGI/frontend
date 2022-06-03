@@ -41,7 +41,7 @@ class _AuthPageState extends State<AuthPage> {
                 decoration: const InputDecoration(hintText: "Mot de passe"),
               ),
               const SizedBox(height: 50),
-              SizedBox(
+              const SizedBox(
                   width: 400,
                   child: Text("Veuillez mentionner votre adresse en cas d'inscription :", style: TextStyle(fontWeight: FontWeight.bold),)),
               TextFormField(

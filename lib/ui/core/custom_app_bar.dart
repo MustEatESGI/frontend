@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 
 import '../home/home_page.dart';
 import '../home/search_option.dart';
@@ -19,6 +20,7 @@ class CustomAppBar extends AppBar {
           IconButton(
               padding: const EdgeInsets.all(20),
               onPressed: () {
+                context.read<SearchCubit>().reset();
                 GoRouter.of(context).go('/');
               },
               icon: const Icon(Icons.home)),
@@ -37,7 +39,7 @@ class CustomAppBar extends AppBar {
               bottom: 10,
               right: 10,
               child: BlocBuilder<OrderCubit, OrderState>(builder: (context, state) {
-                return Text(state.meals != null  ? state.meals!.length.toString() : '', style: TextStyle(fontWeight: FontWeight.bold),);
+                return Text(state.meals != null  ? state.meals!.length.toString() : '', style: const TextStyle(fontWeight: FontWeight.bold),);
               }))
         ],
       ),

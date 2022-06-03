@@ -7,7 +7,8 @@ part 'restaurant.g.dart';
 
 @JsonSerializable()
 class Restaurant{
-  String? id, name, imageUrl;
+  int? id;
+  String? name, imageUrl;
   String? distance;
   List<Meal>? meals;
 
