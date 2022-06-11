@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:must_eat_gui/models/credentials.dart';
 import 'package:must_eat_gui/services/authentication.dart';
 import 'package:must_eat_gui/services/order.dart';
 import 'package:must_eat_gui/services/search.dart';
@@ -14,9 +15,10 @@ class Injection {
   static Search get search => Search(dio);
   static SearchCubit get searchCubit => SearchCubit(search);
   static Order get order => Order(dio);
-  static OrderCubit get orderCubit => OrderCubit(search, order);
-  static AuthCubit get authCubit => AuthCubit();
+  static OrderCubit get orderCubit => OrderCubit(order);
+  static AuthCubit get authCubit => AuthCubit(authentication);
 
 }
 
 String convertPrice(price) => (price! / 100.00).toString() + ' €';
+Credentials kCreds = Credentials('', '');

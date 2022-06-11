@@ -54,7 +54,7 @@ class _AuthPageState extends State<AuthPage> {
                 children: [
                   GFButton(
                     onPressed: () {
-                      context.read<AuthCubit>().onQuickLogin(context);
+                      context.read<AuthCubit>().onSignIn(context);
                       context.read<OrderCubit>().clearCommand();
                     },
                     text: "Connexion",

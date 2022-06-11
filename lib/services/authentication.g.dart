@@ -10,7 +10,7 @@ part of 'authentication.dart';
 
 class _Authentication implements Authentication {
   _Authentication(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
+    baseUrl ??= 'http://localhost:8080/';
   }
 
   final Dio _dio;
@@ -18,47 +18,55 @@ class _Authentication implements Authentication {
   String? baseUrl;
 
   @override
-  Future<User> signUp() async {
+  Future<bool> signUp(user) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(
+    _data.addAll(user.toJson());
+    final _result = await _dio.fetch<bool>(_setStreamType<bool>(
         Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/sign-up',
+            .compose(_dio.options, '/user',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = User.fromJson(_result.data!);
+    final value = _result.data!;
     return value;
   }
 
   @override
-  Future<User> signIn() async {
+  Future<Credentials> signIn(username, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/sign-in',
+    final _data = {'username': username, 'password': password};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<Credentials>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'application/x-www-form-urlencoded')
+            .compose(_dio.options, '/login',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = User.fromJson(_result.data!);
+    final value = Credentials.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<void> signOut(user) async {
+  Future<Credentials> refresh(authorization) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/sign-out',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<Credentials>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/users/token/refresh',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = Credentials.fromJson(_result.data!);
+    return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

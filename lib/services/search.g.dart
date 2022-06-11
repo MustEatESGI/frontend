@@ -18,10 +18,11 @@ class _Search implements Search {
   String? baseUrl;
 
   @override
-  Future<List<Restaurant>> searchTrendyRestaurants() async {
+  Future<List<Restaurant>> searchTrendyRestaurants(authorization) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<Restaurant>>(
@@ -36,10 +37,11 @@ class _Search implements Search {
   }
 
   @override
-  Future<List<Meal>> searchByMeal(name, sort) async {
+  Future<List<Meal>> searchByMeal(authorization, name, sort) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Meal>>(
         Options(method: 'GET', headers: _headers, extra: _extra)
@@ -53,10 +55,11 @@ class _Search implements Search {
   }
 
   @override
-  Future<Meal> searchSingleMealByID(id) async {
+  Future<Meal> searchSingleMealByID(authorization, id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<Meal>(
         Options(method: 'GET', headers: _headers, extra: _extra)
@@ -68,10 +71,11 @@ class _Search implements Search {
   }
 
   @override
-  Future<Restaurant> searchRestaurantByID(id) async {
+  Future<Restaurant> searchRestaurantByID(authorization, id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<Restaurant>(

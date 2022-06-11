@@ -14,10 +14,9 @@ part 'order_state.dart';
 part 'order_cubit.freezed.dart';
 
 class OrderCubit extends Cubit<OrderState> {
-  final Search _search;
   final Order _order;
 
-  OrderCubit(this._search, this._order) : super(OrderState.initial());
+  OrderCubit(this._order) : super(OrderState.initial());
 
   void createCommand(String userID, String restaurantID, Meal meal) async {
     final command = Command(userId: userID, restaurantId: restaurantID, mealIds: [meal.id!.toString()]);
@@ -41,7 +40,6 @@ class OrderCubit extends Cubit<OrderState> {
   void computeTotalPrice() async {
     double total = 00.00;
     if (state.command == null) emit(state.copyWith(totalPrice: total.toString()));
-    final mealsIds = state.command?.mealIds;
     final meals = state.meals;
 
     for (var element in meals!) {

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/models/meal.dart';
 import 'package:must_eat_gui/models/restaurant.dart';
 import 'package:must_eat_gui/services/search.dart';
@@ -38,7 +39,7 @@ class SearchCubit extends Cubit<SearchState> {
     if (name.isEmpty || name == '') {
       emit(state.copyWith(isTrendy: true));
     } else {
-      final meals = await _searchService.searchByMeal(name, state.filter);
+      final meals = await _searchService.searchByMeal("Bearer ${kCreds.access_token!}",name, state.filter);
       // // TODO RM
       // final meals = List.generate(
       //     30,
@@ -86,7 +87,7 @@ class SearchCubit extends Cubit<SearchState> {
     //   return e;
     // }).toList();
     // restaurant.meals = meals;
-    final restaurant = await _searchService.searchRestaurantByID(restaurantID);
+    final restaurant = await _searchService.searchRestaurantByID("Bearer ${kCreds.access_token!}", restaurantID);
 
     final nextState = state.copyWith(restaurant: restaurant);
     emit(nextState);

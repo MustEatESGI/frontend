@@ -28,44 +28,45 @@ class MealCard extends StatelessWidget {
       onTap: () {
         context.go('/restaurant/$restaurantId');
       },
-      child: Stack(
-        children: [
-          Card(
-            elevation: 8,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                Image.network(
-                  posterURL,
-                  fit: BoxFit.cover,
-                ),
-                Flexible(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              name,
-                              style: const TextStyle(fontWeight: FontWeight.w700),
-                            ),
-                            Text(deliveryTime),
-                            Text(
-                              price,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )),
-              ],
+      child: Card(
+        elevation: 8,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 250,
+              width: MediaQuery.of(context).size.width,
+              child: Image.network(
+                posterURL,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+            Flexible(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      Text(deliveryTime),
+                      Text(
+                        price,
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

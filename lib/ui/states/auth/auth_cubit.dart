@@ -2,13 +2,23 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:must_eat_gui/core/injection.dart';
+import 'package:must_eat_gui/models/credentials.dart';
+import 'package:must_eat_gui/models/location.dart';
+import 'package:must_eat_gui/models/user.dart';
+import 'package:must_eat_gui/services/authentication.dart';
 
 part 'auth_state.dart';
 
 part 'auth_cubit.freezed.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState.initial());
+  final Authentication _authentication;
+
+
+
+
+  AuthCubit(this._authentication) : super(AuthState.initial());
 
   bool get isValidForm => state.email != null && state.password != null && state.email!.length > 2 && state.password!.length > 2;
 
@@ -25,15 +35,30 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(password: pw));
   }
 
-  void onSignIn(BuildContext context) {
+  void onSignIn(BuildContext context) async {
     if(!isValidForm) return;
-    emit(state.copyWith(isLoggedIn: true));
-    context.go('/');
+    final user = User(username: state.email, password: state.password);
+    try{
+      final res = await _authentication.signIn(user.username!, user.password!);
+      kCreds = res;
+      emit(state.copyWith(isLoggedIn: true));
+      context.go('/');
+    }catch (e) {
+      final p = e;
+    }
+
   }
 
-  void onSignUp(BuildContext context) {
+  void onSignUp(BuildContext context) async {
     if(!isValidForm) return;
-    emit(state.copyWith(isLoggedIn: true));
-    context.go('/');
+    final user = User(username: state.email, password: state.password, location: Location(latitude: 41.5, longitude: 2.5));
+    try{
+      await _authentication.signUp(user);
+      emit(state.copyWith(isLoggedIn: false));
+      GoRouter.of(context).refresh();
+    }catch (e) {
+      final p = e;
+    }
+
   }
 }

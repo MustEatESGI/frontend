@@ -13,14 +13,14 @@ abstract class Search{
   factory Search(Dio dio, {String baseUrl}) = _Search;
 
   @GET("/restaurant/trending")
-  Future<List<Restaurant>> searchTrendyRestaurants();
+  Future<List<Restaurant>> searchTrendyRestaurants(@Header("Authorization") String authorization, );
 
   @GET("/search/{mealName}/{sort}")
-  Future<List<Meal>> searchByMeal(@Path("mealName") String name, @Path("sort") String sort);
+  Future<List<Meal>> searchByMeal(@Header("Authorization") String authorization, @Path("mealName") String name, @Path("sort") String sort);
 
   @GET("/search/{id}")
-  Future<Meal> searchSingleMealByID(@Path("id") String id);
+  Future<Meal> searchSingleMealByID(@Header("Authorization") String authorization, @Path("id") String id);
 
   @GET("/restaurant/{id}")
-  Future<Restaurant> searchRestaurantByID(@Path("id") String id);
+  Future<Restaurant> searchRestaurantByID(@Header("Authorization") String authorization, @Path("id") String id);
 }
