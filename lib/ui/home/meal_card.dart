@@ -26,7 +26,8 @@ class MealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.go('/restaurant/$restaurantId');
+        // context.go('/restaurant/$restaurantId');
+        GoRouter.of(context).push('/restaurant/$restaurantId');
       },
       child: Card(
         elevation: 8,

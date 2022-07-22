@@ -10,7 +10,7 @@ part of 'search.dart';
 
 class _Search implements Search {
   _Search(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://localhost:8080/';
+    baseUrl ??= 'http://musteat.lphn.fr';
   }
 
   final Dio _dio;
@@ -27,7 +27,7 @@ class _Search implements Search {
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<Restaurant>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/restaurant/trending',
+                .compose(_dio.options, '/restaurants/trending',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!

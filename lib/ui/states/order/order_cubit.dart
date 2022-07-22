@@ -19,20 +19,24 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit(this._order) : super(OrderState.initial());
 
   void createCommand(String userID, String restaurantID, Meal meal) async {
-    final command = Command(userId: userID, restaurantId: restaurantID, mealIds: [meal.id!.toString()]);
+    final command = Command(userId: userID, restaurantId: restaurantID, mealsId: [meal.id!.toString()]);
     emit(state.copyWith(command: command, meals: [meal]));
   }
 
-  void addMeal(Meal meal) {
-    if(state.meals != null && state.meals?.first.restaurant?.id != meal.restaurant?.id){
-      return;
+  void addMeal(Meal meal, String restaurantID) {
+    emit(state.copyWith(meals: [...?state.meals, meal]));
+
+    if(state.command == null){
+      final command = Command(userId: kCreds.user_id, restaurantId: restaurantID, mealsId: [meal.id!.toString()]);
+      emit(state.copyWith(command: command));
+    }else{
+      state.command?.mealsId = [...?state.command?.mealsId, meal.id!.toString()];
     }
-    state.command?.mealIds = [...?state.command?.mealIds, meal.id!.toString()];
-    emit(state.copyWith(meals: [...?state.meals, meal], command: state.command));
+    emit(state.copyWith(command: state.command));
   }
 
   void removeMeal(int index) {
-    state.command?.mealIds?.removeAt(index);
+    state.command?.mealsId?.removeAt(index);
     state.meals?.removeAt(index);
     emit(state);
   }
@@ -49,13 +53,18 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   void payCommand(BuildContext context) async{
-    final commandID = await _order.submitCart(state.command!);
-    if(commandID.isNotEmpty){
-      emit(state.copyWith(isPaid: true, isLoading: true));
-      await Future.delayed(const Duration(seconds: 4));
-      emit(OrderState.initial());
-      context.go('/');
+    try{
+      final commandID = await _order.submitCart(kCreds.access_token!, state.command!);
+      if(commandID.isNotEmpty){
+        emit(state.copyWith(isPaid: true, isLoading: true));
+        await Future.delayed(const Duration(seconds: 4));
+        emit(OrderState.initial());
+        context.go('/');
+      }
+    }catch (e){
+      print(e);
     }
+
   }
 
   void clearCommand() {

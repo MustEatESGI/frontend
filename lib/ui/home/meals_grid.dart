@@ -25,7 +25,7 @@ class MealsGrid extends StatelessWidget {
               id: item.id!.toString(),
               index: index,
               name: item.name!,
-              deliveryTime: '0 min',
+              deliveryTime: "${(item.distance!/1000).toStringAsFixed(2)} km",
               price: convertPrice(item.price),
               posterURL: item.picture!,
             );

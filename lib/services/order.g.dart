@@ -10,7 +10,7 @@ part of 'order.dart';
 
 class _Order implements Order {
   _Order(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
+    baseUrl ??= 'http://musteat.lphn.fr';
   }
 
   final Dio _dio;
@@ -18,15 +18,16 @@ class _Order implements Order {
   String? baseUrl;
 
   @override
-  Future<String> submitCart(command) async {
+  Future<String> submitCart(authorization, command) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(command.toJson());
     final _result = await _dio.fetch<String>(_setStreamType<String>(
         Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/submit-cart',
+            .compose(_dio.options, '/order',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;

@@ -15,6 +15,7 @@ class SearchCubit extends Cubit<SearchState> {
   SearchCubit(this._searchService) : super(SearchState.initial());
 
   final Search _searchService;
+  final String accessToken = "Bearer ${kCreds.access_token!}";
 
   void reset() {
     emit(SearchState.initial());
@@ -22,15 +23,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void getTrendyRestaurants() async {
-    // final restaurants = await _searchService.searchTrendyRestaurants();
-    // TODO RM
-    final restaurants = List.generate(
-        30,
-        (index) => Restaurant(
-            id: index,
-            name: 'name $index',
-            distance: index.toString() + ' km',
-            imageUrl: 'https://picsum.photos/200/300'));
+    final restaurants = await _searchService.searchTrendyRestaurants(accessToken);
     final nextState = state.copyWith(isTrendy: true, restaurants: restaurants);
     emit(nextState);
   }
@@ -39,15 +32,7 @@ class SearchCubit extends Cubit<SearchState> {
     if (name.isEmpty || name == '') {
       emit(state.copyWith(isTrendy: true));
     } else {
-      final meals = await _searchService.searchByMeal("Bearer ${kCreds.access_token!}",name, state.filter);
-      // // TODO RM
-      // final meals = List.generate(
-      //     30,
-      //     (index) => Meal(
-      //         id: index.toString(),
-      //         name: 'name $index',
-      //         price: index.toDouble(),
-      //         imageUrl: 'https://picsum.photos/200/300'));
+      final meals = await _searchService.searchByMeal(accessToken,name, state.filter);
       final nextState = state.copyWith(isTrendy: false, meals: meals);
       emit(nextState);
     }
@@ -59,35 +44,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void getRestaurantAndMeals(String restaurantID) async {
-    // var meals = List.generate(
-    //     30,
-    //         (index) => Meal(
-    //         id: index,
-    //         name: 'meal name ${Random().nextInt(9000).toString()}',
-    //         price: index.toDouble(),
-    //         picture: 'https://picsum.photos/200/300',restaurant: null
-    //     ));
-    //
-    // final rand = Random().nextInt(9000).toString();
-    // var restaurant = Restaurant(
-    //     id: Random().nextInt(9000).toString(),
-    //     name: 'Pizza Pino',
-    //     distance: '15' + ' km',
-    //     imageUrl: 'https://picsum.photos/200/300',
-    //     meals: meals
-    // );
-    // meals = meals.map((e) {
-    //   e.restaurant = Restaurant(
-    //       id: Random().nextInt(9000).toString(),
-    //       name: 'Pizza Pino',
-    //       distance: '15' + ' km',
-    //       imageUrl: 'https://picsum.photos/200/300',
-    //       meals: meals
-    //   );
-    //   return e;
-    // }).toList();
-    // restaurant.meals = meals;
-    final restaurant = await _searchService.searchRestaurantByID("Bearer ${kCreds.access_token!}", restaurantID);
+    final restaurant = await _searchService.searchRestaurantByID(accessToken, restaurantID);
 
     final nextState = state.copyWith(restaurant: restaurant);
     emit(nextState);
@@ -112,6 +69,6 @@ String fromFiltersToSortType(List<String> filters) {
   } else if (l.length == 2) {
     return "ratio";
   } else {
-    return l.first == SearchFilter.distance ? "distanmce" : "price";
+    return l.first == SearchFilter.distance ? "distance" : "price";
   }
 }

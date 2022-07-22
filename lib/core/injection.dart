@@ -21,4 +21,5 @@ class Injection {
 }
 
 String convertPrice(price) => (price! / 100.00).toString() + ' €';
-Credentials kCreds = Credentials('', '');
+Credentials kCreds = Credentials('', '', '');
+const backendUrl = "http://musteat.lphn.fr";

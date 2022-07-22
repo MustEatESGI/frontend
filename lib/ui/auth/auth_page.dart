@@ -45,7 +45,7 @@ class _AuthPageState extends State<AuthPage> {
                   width: 400,
                   child: Text("Veuillez mentionner votre adresse en cas d'inscription :", style: TextStyle(fontWeight: FontWeight.bold),)),
               TextFormField(
-                onChanged: context.read<AuthCubit>().onPasswordChange,
+                onChanged: context.read<AuthCubit>().onAddressChange,
                 decoration: const InputDecoration(hintText: "Adresse"),
               ),
               const SizedBox(height: 50),
@@ -66,6 +66,15 @@ class _AuthPageState extends State<AuthPage> {
                       context.read<OrderCubit>().clearCommand();
                     },
                     text: "Inscription",
+                  ),
+                  GFButton(
+                    color: GFColors.SUCCESS,
+                    onPressed: () {
+                      context.read<AuthCubit>().onEmailChange("Florian");
+                      context.read<AuthCubit>().onPasswordChange("Password1");
+                      context.read<AuthCubit>().onSignIn(context);
+                    },
+                    text: "QUICK",
                   ),
                 ],
               ),

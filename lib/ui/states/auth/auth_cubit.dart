@@ -17,7 +17,6 @@ class AuthCubit extends Cubit<AuthState> {
 
 
 
-
   AuthCubit(this._authentication) : super(AuthState.initial());
 
   bool get isValidForm => state.email != null && state.password != null && state.email!.length > 2 && state.password!.length > 2;
@@ -33,6 +32,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   void onPasswordChange(String pw) {
     emit(state.copyWith(password: pw));
+  }
+
+
+  void onAddressChange(String address) {
+    emit(state.copyWith(address: address));
   }
 
   void onSignIn(BuildContext context) async {
@@ -51,9 +55,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   void onSignUp(BuildContext context) async {
     if(!isValidForm) return;
-    final user = User(username: state.email, password: state.password, location: Location(latitude: 41.5, longitude: 2.5));
+    final user = User(username: state.email, password: state.password, location: Location.fromAddress(address: state.address!));
     try{
-      await _authentication.signUp(user);
+      final string = await _authentication.signUp(user);
       emit(state.copyWith(isLoggedIn: false));
       GoRouter.of(context).refresh();
     }catch (e) {

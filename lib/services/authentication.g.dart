@@ -10,7 +10,7 @@ part of 'authentication.dart';
 
 class _Authentication implements Authentication {
   _Authentication(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://localhost:8080/';
+    baseUrl ??= 'http://musteat.lphn.fr';
   }
 
   final Dio _dio;
@@ -18,13 +18,13 @@ class _Authentication implements Authentication {
   String? baseUrl;
 
   @override
-  Future<bool> signUp(user) async {
+  Future<String> signUp(user) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _result = await _dio.fetch<bool>(_setStreamType<bool>(
+    final _result = await _dio.fetch<String>(_setStreamType<String>(
         Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/user',
                 queryParameters: queryParameters, data: _data)

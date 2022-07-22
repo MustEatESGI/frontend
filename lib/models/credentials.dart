@@ -6,9 +6,9 @@ part 'credentials.g.dart';
 
 @JsonSerializable()
 class Credentials{
-  String? access_token, refresh_token;
+  String? user_id, access_token, refresh_token;
 
-  Credentials(this.access_token, this.refresh_token);
+  Credentials(this.user_id, this.access_token, this.refresh_token);
 
   factory Credentials.fromJson(Map<String, dynamic> json) => _$CredentialsFromJson(json);
 

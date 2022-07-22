@@ -8,6 +8,7 @@ class AuthState with _$AuthState {
     required bool isLoggedIn,
     String? email,
     String? password,
+    String? address,
   }) = _AuthState;
 
   factory AuthState.initial() => const AuthState(isLoggedIn: false);

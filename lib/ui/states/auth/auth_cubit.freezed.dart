@@ -19,6 +19,7 @@ mixin _$AuthState {
   bool get isLoggedIn => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthStateCopyWith<AuthState> get copyWith =>
@@ -29,7 +30,8 @@ mixin _$AuthState {
 abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res>;
-  $Res call({bool isLoggedIn, String? email, String? password});
+  $Res call(
+      {bool isLoggedIn, String? email, String? password, String? address});
 }
 
 /// @nodoc
@@ -45,6 +47,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? isLoggedIn = freezed,
     Object? email = freezed,
     Object? password = freezed,
+    Object? address = freezed,
   }) {
     return _then(_value.copyWith(
       isLoggedIn: isLoggedIn == freezed
@@ -59,6 +62,10 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -69,7 +76,8 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
           _AuthState value, $Res Function(_AuthState) then) =
       __$AuthStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoggedIn, String? email, String? password});
+  $Res call(
+      {bool isLoggedIn, String? email, String? password, String? address});
 }
 
 /// @nodoc
@@ -86,6 +94,7 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? isLoggedIn = freezed,
     Object? email = freezed,
     Object? password = freezed,
+    Object? address = freezed,
   }) {
     return _then(_AuthState(
       isLoggedIn: isLoggedIn == freezed
@@ -100,6 +109,10 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -107,7 +120,8 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_AuthState extends _AuthState {
-  const _$_AuthState({required this.isLoggedIn, this.email, this.password})
+  const _$_AuthState(
+      {required this.isLoggedIn, this.email, this.password, this.address})
       : super._();
 
   @override
@@ -116,10 +130,12 @@ class _$_AuthState extends _AuthState {
   final String? email;
   @override
   final String? password;
+  @override
+  final String? address;
 
   @override
   String toString() {
-    return 'AuthState(isLoggedIn: $isLoggedIn, email: $email, password: $password)';
+    return 'AuthState(isLoggedIn: $isLoggedIn, email: $email, password: $password, address: $address)';
   }
 
   @override
@@ -130,7 +146,8 @@ class _$_AuthState extends _AuthState {
             const DeepCollectionEquality()
                 .equals(other.isLoggedIn, isLoggedIn) &&
             const DeepCollectionEquality().equals(other.email, email) &&
-            const DeepCollectionEquality().equals(other.password, password));
+            const DeepCollectionEquality().equals(other.password, password) &&
+            const DeepCollectionEquality().equals(other.address, address));
   }
 
   @override
@@ -138,7 +155,8 @@ class _$_AuthState extends _AuthState {
       runtimeType,
       const DeepCollectionEquality().hash(isLoggedIn),
       const DeepCollectionEquality().hash(email),
-      const DeepCollectionEquality().hash(password));
+      const DeepCollectionEquality().hash(password),
+      const DeepCollectionEquality().hash(address));
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +168,8 @@ abstract class _AuthState extends AuthState {
   const factory _AuthState(
       {required final bool isLoggedIn,
       final String? email,
-      final String? password}) = _$_AuthState;
+      final String? password,
+      final String? address}) = _$_AuthState;
   const _AuthState._() : super._();
 
   @override
@@ -159,6 +178,8 @@ abstract class _AuthState extends AuthState {
   String? get email => throw _privateConstructorUsedError;
   @override
   String? get password => throw _privateConstructorUsedError;
+  @override
+  String? get address => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AuthStateCopyWith<_AuthState> get copyWith =>

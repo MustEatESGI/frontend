@@ -48,7 +48,7 @@ class RestaurantCard extends StatelessWidget {
                             restaurant.name!,
                             style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          Text(restaurant.distance!),
+                          // Text(restaurant.distance!),
                         ],
                       ),
                     ),

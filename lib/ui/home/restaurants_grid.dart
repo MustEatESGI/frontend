@@ -11,9 +11,13 @@ class RestaurantsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
+      if(state.restaurants == null){
+        return CircularProgressIndicator();
+      }
+
       return GridView.builder(
           padding: const EdgeInsets.all(20),
-          itemCount: 18,
+          itemCount: state.restaurants!.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 10),
           itemBuilder: (context, index) {

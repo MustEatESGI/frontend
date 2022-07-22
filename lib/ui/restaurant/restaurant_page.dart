@@ -41,9 +41,16 @@ class RestaurantPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      stateSearch.restaurant!.name!,
-                      style: const TextStyle(fontSize: 25),
+                    child: Row(
+                      children: [
+                        IconButton(onPressed: (){
+                          GoRouter.of(context).pop();
+                        }, icon: Icon(Icons.arrow_back_ios)),
+                        Text(
+                          stateSearch.restaurant!.name!,
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                      ],
                     ),
                   ),
                   if(stateSearch.restaurant?.meals != null)
@@ -72,7 +79,7 @@ class RestaurantPage extends StatelessWidget {
                                         ],
                                       )),
                                   Flexible(child: IconButton(onPressed: () {
-                                    context.read<OrderCubit>().addMeal(m);
+                                    context.read<OrderCubit>().addMeal( m, restaurantID);
                                   }, icon: const Icon(Icons.add_circle))),
                                 ],
                               ),
