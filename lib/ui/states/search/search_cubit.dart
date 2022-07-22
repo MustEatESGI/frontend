@@ -33,7 +33,7 @@ class SearchCubit extends Cubit<SearchState> {
       emit(state.copyWith(isTrendy: true));
     } else {
       final meals = await _searchService.searchByMeal(accessToken,name, state.filter);
-      final nextState = state.copyWith(isTrendy: false, meals: meals);
+      final nextState = state.copyWith(isTrendy: false, meals: meals, mealName: name);
       emit(nextState);
     }
   }
@@ -41,6 +41,9 @@ class SearchCubit extends Cubit<SearchState> {
   void onFiltersChanged(List<String> filters) {
     final f = fromFiltersToSortType(filters);
     emit(state.copyWith(filter: f));
+    if(state.mealName != null){
+      getByMealAndFilter(state.mealName!);
+    }
   }
 
   void getRestaurantAndMeals(String restaurantID) async {
@@ -54,6 +57,16 @@ class SearchCubit extends Cubit<SearchState> {
 enum SearchFilter { distance, price, ratio }
 
 String fromFiltersToSortType(List<String> filters) {
+  final String filter = filters.first;
+
+  switch(filter){
+    case 'distance':
+      return SearchFilter.distance.name;
+    case 'price':
+      return SearchFilter.price.name;
+    default:
+      return SearchFilter.ratio.name;
+  }
   final l = [];
   for (var i = 0; i < filters.length; i++) {
     final f = filters[i];

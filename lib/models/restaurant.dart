@@ -9,7 +9,7 @@ part 'restaurant.g.dart';
 class Restaurant{
   int? id;
   String? name, imageUrl;
-  String? distance;
+  int? distance;
   List<Meal>? meals;
   Location? location;
 

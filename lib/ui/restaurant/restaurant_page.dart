@@ -48,7 +48,7 @@ class RestaurantPage extends StatelessWidget {
                         }, icon: Icon(Icons.arrow_back_ios)),
                         Text(
                           stateSearch.restaurant!.name!,
-                          style: const TextStyle(fontSize: 25),
+                          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -68,19 +68,21 @@ class RestaurantPage extends StatelessWidget {
                                       height: 100,
                                       child: Image.network(m.picture!, fit: BoxFit.cover,)),
                                   SizedBox(
-                                      width: 100,
-                                      child: Text(m.name!)),
+                                      width: 400,
+                                      child: Text(m.name!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500))),
                                   SizedBox(
                                     width: 100,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          Text(convertPrice(m.price),),
+                                          Text(convertPrice(m.price), style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                                         ],
                                       )),
-                                  Flexible(child: IconButton(onPressed: () {
-                                    context.read<OrderCubit>().addMeal( m, restaurantID);
-                                  }, icon: const Icon(Icons.add_circle))),
+                                  Flexible(child: IconButton(
+                                      iconSize: 30,
+                                      onPressed: () {
+                                    context.read<OrderCubit>().addMeal(m, restaurantID);
+                                  }, icon: const Icon(Icons.add_circle, size: 30,))),
                                 ],
                               ),
                             );
@@ -95,7 +97,7 @@ class RestaurantPage extends StatelessWidget {
                           GFButton(
                             onPressed: () {
                               context.read<OrderCubit>().computeTotalPrice();
-                              context.go('/cart');
+                              context.push('/cart');
                             },
                             text: "Aller au panier",
                             color: GFColors.DANGER,

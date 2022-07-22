@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
                   state.isTrendy
                       ? 'Les restaurants tendances près de chez vous'
                       : 'Vos résultats',
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 25, fontWeight: FontWeight.bold),
                 ),

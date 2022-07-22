@@ -17,6 +17,21 @@ class SearchOption extends StatefulWidget {
 class _SearchOptionState extends State<SearchOption> {
   Map<String, bool> values = {'distance': false, 'price': false};
 
+  void onFilterChanged(){
+    final isDistance = values['distance'] == true;
+    final isPrice = values['price'] == true;
+    final isRatio = (isPrice && isDistance) || (!isPrice && !isDistance);
+    if(isRatio){
+      widget.onFiltersChanged(['ratio']);
+    }
+    if(isPrice){
+      widget.onFiltersChanged(['price']);
+    }
+    if(isDistance){
+      widget.onFiltersChanged(['distance']);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,6 +46,7 @@ class _SearchOptionState extends State<SearchOption> {
                 setState(() {
                   values['distance'] = isChecked;
                 });
+                onFilterChanged();
               },
               value: values['distance']!,
               inactiveIcon: null,
@@ -57,6 +73,7 @@ class _SearchOptionState extends State<SearchOption> {
                 setState(() {
                   values['price'] = isChecked;
                 });
+                onFilterChanged();
               },
               value: values['price']!,
               inactiveIcon: null,

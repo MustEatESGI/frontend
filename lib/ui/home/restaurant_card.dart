@@ -19,7 +19,7 @@ class RestaurantCard extends StatelessWidget {
       width: 200,
       child: GestureDetector(
         onTap: () {
-          context.go('/restaurant/${restaurant.id}');
+          GoRouter.of(context).push('/restaurant/${restaurant.id}');
         },
         child: Card(
           elevation: 8,
@@ -28,15 +28,14 @@ class RestaurantCard extends StatelessWidget {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Column(
             children: [
-              Flexible(
-                  flex: 4,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.network(
-                      restaurant.imageUrl!,
-                      fit: BoxFit.cover,
-                    ),
-                  )),
+              SizedBox(
+                height: 150,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  restaurant.imageUrl!,
+                  fit: BoxFit.cover,
+                ),
+              ),
               Flexible(
                   child: Center(
                     child: Padding(

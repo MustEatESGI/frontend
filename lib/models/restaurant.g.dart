@@ -9,7 +9,7 @@ part of 'restaurant.dart';
 Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       id: json['id'] as int?,
       name: json['name'] as String?,
-      distance: json['distance'] as String?,
+      distance: json['distance'] as int?,
       meals: (json['meals'] as List<dynamic>?)
           ?.map((e) => Meal.fromJson(e as Map<String, dynamic>))
           .toList(),

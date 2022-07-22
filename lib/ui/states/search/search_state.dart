@@ -9,6 +9,7 @@ const factory SearchState({
   List<Restaurant>? restaurants,
   List<Meal>? meals,
   Restaurant? restaurant,
+  String? mealName,
   required String filter,
 }) = _SearchState;
 

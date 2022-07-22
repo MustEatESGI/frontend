@@ -32,7 +32,7 @@ class CustomAppBar extends AppBar {
               padding: const EdgeInsets.all(20),
               onPressed: () {
                 context.read<OrderCubit>().computeTotalPrice();
-                GoRouter.of(context).go('/cart');
+                GoRouter.of(context).push('/cart');
               },
               icon: const Icon(Icons.shopping_cart_rounded)),
           Positioned(

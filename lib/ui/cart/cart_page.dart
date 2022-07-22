@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/button/gf_button.dart';
+import 'package:go_router/go_router.dart';
 import 'package:must_eat_gui/core/injection.dart';
 import 'package:must_eat_gui/models/meal.dart';
 import 'package:must_eat_gui/ui/cart/product_tile.dart';
@@ -23,16 +24,30 @@ class CartPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 65, vertical: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: ['Articles', 'Quantité', 'Prix']
-                  .map((e) => Text(e,
-                      style: const TextStyle(
-                          fontSize: 25, fontWeight: FontWeight.bold)))
-                  .toList(),
-            ),
+          Stack(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 65, vertical: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: ['Articles', 'Quantité', 'Prix']
+                      .map((e) => Text(e,
+                          style: const TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold)))
+                      .toList(),
+                ),
+              ),
+              Positioned(
+                top: 40,
+                left: 20,
+                child: IconButton(
+                    onPressed: () {
+                      GoRouter.of(context).pop();
+                    },
+                    icon: Icon(Icons.arrow_back_ios)),
+              )
+            ],
           ),
           const Divider(),
           Flexible(
@@ -57,14 +72,19 @@ class CartPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text('TOTAL : '),
+                  const Text(
+                    'TOTAL : ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                   const SizedBox(
                     width: 20,
                   ),
                   BlocBuilder<OrderCubit, OrderState>(
                     builder: (context, state) {
                       if (state.meals == null) return const SizedBox();
-                      return Text(state.totalPrice);
+                      return Text(state.totalPrice,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20));
                     },
                   ),
                   const SizedBox(
@@ -94,4 +114,3 @@ class CartPage extends StatelessWidget {
     );
   }
 }
-
