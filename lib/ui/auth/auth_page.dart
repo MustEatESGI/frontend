@@ -37,6 +37,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
               const SizedBox(height: 25),
               TextFormField(
+                obscureText: true,
                 onChanged: context.read<AuthCubit>().onPasswordChange,
                 decoration: const InputDecoration(hintText: "Mot de passe"),
               ),
